@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
-const connectDB = async () => {
+const connectDB = async (): Promise<void> => {
     try {
-        await mongoose.connect(`${process.env.MONGODB_URI}/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`);
+        const uri: string = `${process.env.MONGODB_URI}/${process.env.DB_NAME}`;
+        await mongoose.connect(uri);
         console.log("mongodb connected successfully");
     }
-    catch (error) {
+    catch (error: unknown) {
         console.log("mongodb connection failed", error);
         throw error;
     }

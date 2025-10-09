@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verification } from "./verification.js";
+import { verification } from "./verification.js"
 
 const router = Router();
 

@@ -1,6 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Schema , Document, Model } from "mongoose";
 
-const verificationSchema = new mongoose.Schema(
+export interface IUser extends Document {
+    name: string;
+    username: string;
+    workerId: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+const verificationSchema: Schema<IUser> = new Schema(
     {
         name: {
             type: String,
@@ -16,11 +24,11 @@ const verificationSchema = new mongoose.Schema(
         workerId: {
             type: String,
             required: true
-        }
+        },
     },
     { 
         timestamps: true 
     }
 )
 
-export const User = mongoose.model("User", verificationSchema);
+export const User: Model<IUser> = mongoose.model<IUser>("User", verificationSchema);

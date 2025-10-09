@@ -1,35 +1,38 @@
+import type { Request, Response } from "express";
+
+import type { IUser} from "./model.js";
 import { User } from "./model.js";
-const verification = async(req, res) => {
-    const username = req.query.username;
+const verification = async(req: Request, res: Response): Promise<Response> => {
+    const username = req.query.username as string | undefined;
     try {
         if(!username) 
-            res.status(400)
+            return res.status(400)
                 .json({
                     status: false,
                     message: "credentials required",
                 })
         
-        const isUser = await User.findOne({username})
+        const isUser: IUser | null = await User.findOne({username})
     
         if(!isUser) 
-            res.status(404)
+            return res.status(404)
                 .json({
                     status: false,
                     message: "User not found",
                 })
 
-        res.status(200)
+        return res.status(200)
             .json({
                 success: true,
                 message: "User verified",
                 data: isUser,
             })
-    } catch (error) {
+    } catch (error: unknown) {
         console.log("Error: ", error);
-        res.status(500)
+        return res.status(500)
             .json({
                 success: false,
-                message: error.message,
+                message: error instanceof Error ? error.message : "Something went wrong",
             })
     }   
 }
